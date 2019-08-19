@@ -93,7 +93,20 @@ router.get("/:id", validateActionId, async (req, res) => {
 });
 
 // createAction
-router.post("/", (req, res) => {});
+router.post("/", validateActionInput, async (req, res) => {
+  try {
+    const action = await Action.insert({ ...req.body, completed: false });
+
+    res.status(201).json({
+      action
+    });
+  } catch (error) {
+    res.status(500).json({
+      errorMessage: "internal server error",
+      message: error.message
+    });
+  }
+});
 
 // updateActionById
 router.put("/:id", (req, res) => {});

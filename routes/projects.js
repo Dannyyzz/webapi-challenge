@@ -100,6 +100,19 @@ router.put("/:id", validateProjectId, async (req, res) => {
   }
 });
 
-router.detele("/:id", (req, res) => {});
+router.delete("/:id", validateProjectId, async (req, res) => {
+  try {
+    await Project.remove(req.project.id);
+
+    res.status(200).json({
+      project: req.project
+    });
+  } catch (error) {
+    res.status(500).json({
+      errorMessage: "internal server error",
+      message: error.message
+    });
+  }
+});
 
 module.exports = router;

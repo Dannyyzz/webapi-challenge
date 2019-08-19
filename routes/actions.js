@@ -109,7 +109,26 @@ router.post("/", validateActionInput, async (req, res) => {
 });
 
 // updateActionById
-router.put("/:id", (req, res) => {});
+router.put(
+  "/:id",
+  [validateActionId, validateActionInput],
+  async (req, res) => {
+    const { action } = req;
+
+    try {
+      const updatedAction = await Action.update(action.id, req.body);
+
+      res.status(200).json({
+        action: updatedAction
+      });
+    } catch (error) {
+      res.status(500).json({
+        errorMessage: "internal server error",
+        message: error.message
+      });
+    }
+  }
+);
 
 // deleteActionById
 router.delete("/:id", (req, res) => {});

@@ -67,7 +67,6 @@ async function validateActionInput(req, res, next) {
   }
 }
 
-// getAllActions
 router.get("/", async (_req, res) => {
   try {
     const actions = await Action.get();
@@ -83,8 +82,7 @@ router.get("/", async (_req, res) => {
   }
 });
 
-// getActionById
-router.get("/:id", validateActionId, async (req, res) => {
+router.get("/:id", validateActionId, (req, res) => {
   const { action } = req;
 
   res.json({
@@ -92,7 +90,6 @@ router.get("/:id", validateActionId, async (req, res) => {
   });
 });
 
-// createAction
 router.post("/", validateActionInput, async (req, res) => {
   try {
     const action = await Action.insert({ ...req.body, completed: false });
@@ -108,7 +105,6 @@ router.post("/", validateActionInput, async (req, res) => {
   }
 });
 
-// updateActionById
 router.put(
   "/:id",
   [validateActionId, validateActionInput],
@@ -130,7 +126,6 @@ router.put(
   }
 );
 
-// deleteActionById
 router.delete("/:id", validateActionId, async (req, res) => {
   try {
     const { action } = req;

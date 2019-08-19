@@ -25,7 +25,7 @@ async function validateProjectId(req, res, next) {
 
     if (!project) {
       res.status(404).json({
-        message: "Invalid Project ID"
+        message: "invalid project id"
       });
 
       return;

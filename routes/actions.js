@@ -1,5 +1,6 @@
 const express = require("express");
 const Action = require("../data/helpers/actionModel");
+const Project = require("../data/helpers/projectModel");
 
 const router = express.Router();
 
@@ -27,6 +28,35 @@ async function validateActionId(req, res, next) {
     }
 
     req.action = action;
+
+    next();
+  } catch (error) {
+    res.status(500).json({
+      errorMessage: "internal server error",
+      message: error.message
+    });
+  }
+}
+
+async function validateActionInput(req, res, next) {
+  const { project_id, description, notes } = req.body;
+
+  if (!project_id || !description || !notes) {
+    res.status(400).json({
+      message: "Please provide a project_id, description, and notes"
+    });
+    return;
+  }
+
+  try {
+    const project = await Project.get(project_id);
+
+    if (!project) {
+      res.status(404).json({
+        message: "invalid project_id"
+      });
+      return;
+    }
 
     next();
   } catch (error) {

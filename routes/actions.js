@@ -131,6 +131,20 @@ router.put(
 );
 
 // deleteActionById
-router.delete("/:id", (req, res) => {});
+router.delete("/:id", validateActionId, async (req, res) => {
+  try {
+    const { action } = req;
+    await Action.remove(action.id);
+
+    res.status(200).json({
+      action
+    });
+  } catch (error) {
+    res.status(500).json({
+      errorMessage: "internal server error",
+      message: error.message
+    });
+  }
+});
 
 module.exports = router;

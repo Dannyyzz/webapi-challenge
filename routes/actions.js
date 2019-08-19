@@ -54,7 +54,13 @@ router.get("/", async (_req, res) => {
 });
 
 // getActionById
-router.get("/:id", (req, res) => {});
+router.get("/:id", validateActionId, async (req, res) => {
+  const { action } = req;
+
+  res.json({
+    action
+  });
+});
 
 // createAction
 router.post("/", (req, res) => {});

@@ -18,7 +18,28 @@ router.get("/", async (_req, res) => {
   }
 });
 
-router.get("/:id", (req, res) => {});
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const project = await Project.get(id);
+
+    if (!project) {
+      res.status(404).json({
+        message: "Project not found with that ID"
+      });
+    }
+
+    res.status(200).json({
+      project
+    });
+  } catch (error) {
+    res.status(500).json({
+      errorMessage: "Internal Server Error",
+      message: error.message
+    });
+  }
+});
 
 router.post("/", (req, res) => {});
 

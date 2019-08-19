@@ -25,7 +25,7 @@ async function validateProjectId(req, res, next) {
 
     if (!project) {
       res.status(404).json({
-        message: "invalid project id"
+        message: "Invalid Project ID"
       });
 
       return;
@@ -113,7 +113,7 @@ router.delete("/:id", validateProjectId, async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({
-      errorMessage: "internal server error",
+      errorMessage: "Internal Server Error",
       message: error.message
     });
   }

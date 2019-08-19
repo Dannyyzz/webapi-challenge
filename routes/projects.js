@@ -41,7 +41,26 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/", (req, res) => {});
+router.post("/", async (req, res) => {
+  const { name, description } = req.body;
+
+  try {
+    const project = await Project.insert({
+      name,
+      description,
+      completed: false
+    });
+
+    res.status(201).json({
+      project
+    });
+  } catch (error) {
+    res.status(500).json({
+      errorMessage: "Internal Server Error",
+      message: error.message
+    });
+  }
+});
 
 router.put("/:id", (req, res) => {});
 

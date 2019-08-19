@@ -55,7 +55,7 @@ router.get("/", async (_req, res) => {
   }
 });
 
-router.get("/:id",validateProjectId, (req, res) => {
+router.get("/:id", validateProjectId, (req, res) => {
   const { project } = req;
   res.json({ project });
 });
@@ -81,7 +81,24 @@ router.post("/", validateProjectInput, async (req, res) => {
   }
 });
 
-router.put("/:id", validateProjectId (req, res) => {});
+router.put("/:id", validateProjectId, async (req, res) => {
+  try {
+    const project = await Project.update(req.project.id, {
+      name: req.project.name,
+      description: req.project.description,
+      ...req.body
+    });
+
+    res.status(200).json({
+      project
+    });
+  } catch (error) {
+    res.status(500).json({
+      errorMessage: "Internal Server Error",
+      message: error.message
+    });
+  }
+});
 
 router.detele("/:id", (req, res) => {});
 

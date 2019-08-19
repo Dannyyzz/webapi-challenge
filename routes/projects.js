@@ -3,6 +3,20 @@ const router = express.Router();
 
 const Project = require("../data/helpers/projectModel");
 
+function validateProjectInput(req, res, next) {
+  const { name, description } = req.body;
+
+  if (!name || !description) {
+    res.status(400).json({
+      message: "Please provide name and description"
+    });
+
+    return;
+  }
+
+  next();
+}
+
 router.get("/", async (_req, res) => {
   try {
     const projects = await Project.get();
@@ -41,7 +55,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", validateProjectInput, async (req, res) => {
   const { name, description } = req.body;
 
   try {
